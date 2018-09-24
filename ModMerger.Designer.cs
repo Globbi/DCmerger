@@ -123,7 +123,7 @@
             this.updateModListToolStripMenuItem.Name = "updateModListToolStripMenuItem";
             this.updateModListToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.updateModListToolStripMenuItem.Text = "Refresh Mod List";
-            this.updateModListToolStripMenuItem.ToolTipText = "Scan for changes in the mod folder";
+            this.updateModListToolStripMenuItem.ToolTipText = "Manually refresh mod info";
             this.updateModListToolStripMenuItem.Click += new System.EventHandler(this.RefreshModListToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem

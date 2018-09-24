@@ -48,8 +48,8 @@ namespace DC_Mod_Merger
                     }
                     else //I know a mod like that
                     {
-                        mod.FetchFiles();
-                        if (mod.Active)
+                        mod.FetchInfo();
+                        if (mod.IsActive)
                             tempActive.Add(mod);
                         else
                             tempPassive.Add(mod);
@@ -104,7 +104,7 @@ namespace DC_Mod_Merger
         {
             foreach(ModEntry mod in ActiveMods)
             {
-                mod.Active = false;
+                mod.IsActive = false;
                 InsertSorted(mod);
             }
             activeMods = new ActiveModList();
@@ -127,11 +127,13 @@ namespace DC_Mod_Merger
                 Tools.UnpackResPak(activeMods[i].ID, TEMP); 
             }
 
-            if (Directory.EnumerateFileSystemEntries(TEMP).Any()) //Were files unpacked?
-                Tools.PackResPak(TEMP); //Pack those files
+            //Do I need to make a res.pak? otherwise just wipe the old one
+            if (Directory.EnumerateFileSystemEntries(TEMP).Any())
+                Tools.PackResPak(TEMP);
             else
-                if (File.Exists(Program.MOD_MERGER + "\\res.pak")) File.Delete(Program.MOD_MERGER + "\\res.pak"); //Wipe res.pak otherwise
+                if (File.Exists(Program.MOD_MERGER + "\\res.pak")) File.Delete(Program.MOD_MERGER + "\\res.pak");
 
+            //Is a mod using a scipts? otherwise just wipe the old scripts folder
             if (scriptPath != "")
             {
                 //Copy all directories

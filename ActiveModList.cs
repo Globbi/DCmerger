@@ -27,7 +27,7 @@ namespace DC_Mod_Merger
 
         public void Add(ModEntry entry)
         {
-            entry.Active = true;
+            entry.IsActive = true;
 
             activeMods.Add(entry);
             warnings.Add("");
@@ -50,7 +50,7 @@ namespace DC_Mod_Merger
         public ModEntry RemoveAt(int index)
         {
             ModEntry entry = activeMods[index];
-            entry.Active = false;
+            entry.IsActive = false;
 
             activeMods.RemoveAt(index);
             warnings.RemoveAt(index);
@@ -126,24 +126,24 @@ namespace DC_Mod_Merger
 
     public class ModEntry : IComparable<ModEntry>
     {
-        [XmlElement("Active")]
-        public bool Active { get; set; }
-        [XmlElement("Name")]
-        public string Name { get; set; }
         [XmlElement("ID")]
         public string ID { get; set; }
-        [XmlElement("HasStruct")]
+        [XmlElement("IsActive")]
+        public bool IsActive { get; set; }
+        [XmlIgnore]
+        public string Name { get; set; }
+        [XmlIgnore]
         public bool HasStruct { get; set; }
         [XmlIgnore]
         public List<string> Files { get; set; }
-
-        public bool IsActive { get { return Active; } }
-
+        
         public string Path { get { return Program.MOD_PATH + "\\" + ID; } }
 
-        public void FetchFiles()
+        public void FetchInfo()
         {
-            Files = PakReader.ReadFilesInPAK(Path+"\\res.pak");
+            Name = Tools.ReadModName(Path + @"\settings.json");
+            HasStruct = System.IO.Directory.Exists(Path + @"\Scripts\Struct");
+            Files = PakReader.ReadFilesInPAK(Path + @"\res.pak");
         }
 
         public override string ToString()
@@ -158,19 +158,12 @@ namespace DC_Mod_Merger
 
         public static ModEntry BuildModEntry(string path)
         {
-            string id = (new System.IO.DirectoryInfo(path)).Name;
-            string name = Tools.ReadModName(path + "\\settings.json");
-            bool hasStruct = System.IO.Directory.Exists(path + @"\Scripts\Struct");
-            List<string> files = PakReader.ReadFilesInPAK(path + @"\res.pak");
+            ModEntry @new = new ModEntry();
+            @new.ID = (new System.IO.DirectoryInfo(path)).Name;
+            @new.IsActive = false;
+            @new.FetchInfo();
 
-            return new ModEntry()
-            {
-                Name = name,
-                ID = id,
-                HasStruct = hasStruct,
-                Files = files,
-                Active = false
-            };
+            return new ModEntry();
         }
     }
 }
