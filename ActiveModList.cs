@@ -134,7 +134,7 @@ namespace DC_Mod_Merger
         public string ID { get; set; }
         [XmlElement("HasStruct")]
         public bool HasStruct { get; set; }
-
+        [XmlIgnore]
         public List<string> Files { get; set; }
 
         public bool IsActive { get { return Active; } }
