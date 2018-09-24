@@ -163,7 +163,7 @@ namespace DC_Mod_Merger
             @new.IsActive = false;
             @new.FetchInfo();
 
-            return new ModEntry();
+            return @new;
         }
     }
 }
