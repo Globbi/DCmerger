@@ -121,8 +121,8 @@
             // updateModListToolStripMenuItem
             // 
             this.updateModListToolStripMenuItem.Name = "updateModListToolStripMenuItem";
-            this.updateModListToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.updateModListToolStripMenuItem.Text = "Refresh Mod List";
+            this.updateModListToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.updateModListToolStripMenuItem.Text = "Refresh Mod Info";
             this.updateModListToolStripMenuItem.ToolTipText = "Manually refresh mod info";
             this.updateModListToolStripMenuItem.Click += new System.EventHandler(this.RefreshModListToolStripMenuItem_Click);
             // 
@@ -220,7 +220,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainWindow";
-            this.Text = "DC Mod Merger (v1.0.1)";
+            this.Text = "DC Mod Merger (v1.0.2)";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
