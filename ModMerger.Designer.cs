@@ -37,7 +37,6 @@
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.toolMenuMods = new System.Windows.Forms.ToolStripMenuItem();
             this.updateModListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cleanUnpackModsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeModsPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pAKToolPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -114,8 +113,7 @@
             // toolMenuMods
             // 
             this.toolMenuMods.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.updateModListToolStripMenuItem,
-            this.cleanUnpackModsToolStripMenuItem});
+            this.updateModListToolStripMenuItem});
             this.toolMenuMods.Name = "toolMenuMods";
             this.toolMenuMods.Size = new System.Drawing.Size(49, 20);
             this.toolMenuMods.Text = "Mods";
@@ -127,14 +125,6 @@
             this.updateModListToolStripMenuItem.Text = "Refresh Mod List";
             this.updateModListToolStripMenuItem.ToolTipText = "Scan for changes in the mod folder";
             this.updateModListToolStripMenuItem.Click += new System.EventHandler(this.RefreshModListToolStripMenuItem_Click);
-            // 
-            // cleanUnpackModsToolStripMenuItem
-            // 
-            this.cleanUnpackModsToolStripMenuItem.Name = "cleanUnpackModsToolStripMenuItem";
-            this.cleanUnpackModsToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.cleanUnpackModsToolStripMenuItem.Text = "Clean Rebuild";
-            this.cleanUnpackModsToolStripMenuItem.ToolTipText = "Rebuilds ModList\r\nUseful when mods were updated";
-            this.cleanUnpackModsToolStripMenuItem.Click += new System.EventHandler(this.CleanRebuildToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -150,8 +140,8 @@
             // 
             this.changeModsPathToolStripMenuItem.Name = "changeModsPathToolStripMenuItem";
             this.changeModsPathToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.changeModsPathToolStripMenuItem.Text = "Change Steam Path";
-            this.changeModsPathToolStripMenuItem.Click += new System.EventHandler(this.SteamPathToolStripMenuItem_Click);
+            this.changeModsPathToolStripMenuItem.Text = "Change Library Path";
+            this.changeModsPathToolStripMenuItem.Click += new System.EventHandler(this.LibraryPathToolStripMenuItem_Click);
             // 
             // pAKToolPathToolStripMenuItem
             // 
@@ -254,7 +244,6 @@
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pAKToolPathToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changeModsPathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cleanUnpackModsToolStripMenuItem;
         private System.Windows.Forms.Button buttonBuild;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.PictureBox pictureWarning;

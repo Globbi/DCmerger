@@ -34,7 +34,7 @@ namespace DC_Mod_Merger
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog()
             {
-                Description = "Please select the Steam folder.",
+                Description = "Please select.",
                 ShowNewFolderButton = false
             };
 
@@ -86,7 +86,7 @@ namespace DC_Mod_Merger
             File.WriteAllText(SettingsPath, paths);
         }
 
-        internal static bool DefaultSteam()
+        internal static bool DefaultSteamLibrary()
         {
             if(!Directory.Exists(MOD_PATH))
             {

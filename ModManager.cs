@@ -35,7 +35,7 @@ namespace DC_Mod_Merger
             if (File.Exists(MOD_LIST)) passivMods = Tools.Deserilize(MOD_LIST);
 
             //Read mod folder for changes
-            bool needToCerial = false;
+            bool needToCereal = false;
             foreach (string modPath in Directory.GetDirectories(Program.MOD_PATH))
             {
                 if (!modPath.Equals(Program.MOD_MERGER)) //Ignore Mod Merger
@@ -43,11 +43,12 @@ namespace DC_Mod_Merger
                     ModEntry mod = SearchLoadedMods(modPath);
                     if (mod == null) //Such mod has not been loaded yet
                     {
-                        needToCerial = true;
+                        needToCereal = true;
                         tempPassive.Add(ModEntry.BuildModEntry(modPath));
                     }
                     else //I know a mod like that
                     {
+                        mod.FetchFiles();
                         if (mod.Active)
                             tempActive.Add(mod);
                         else
@@ -57,19 +58,18 @@ namespace DC_Mod_Merger
                     }
                 }
             }
+            if (passivMods.Count > 0) needToCereal = true; //Too many mods?
 
             passivMods = tempPassive;
             passivMods.Sort();
 
             activeMods = new ActiveModList(tempActive);
 
-            if (needToCerial) Cereal();
+            if (needToCereal) Cereal();
         }
 
-        public void FreshUnpackMods()
+        public void RefreshMods()
         {
-            if (File.Exists(MOD_LIST))
-                File.Delete(MOD_LIST);
             passivMods = new List<ModEntry>();
             activeMods = new ActiveModList();
             FetchMods();
@@ -173,8 +173,7 @@ namespace DC_Mod_Merger
 
         private ModEntry SearchLoadedMods(string path)
         {
-            string ID = (new DirectoryInfo(path)).Name;
-            return passivMods.Find(e => { return e.ID.Equals(ID); });
+            return passivMods.Find(e => { return e.Path.Equals(path); });
         }
     }
 }

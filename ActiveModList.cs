@@ -21,10 +21,8 @@ namespace DC_Mod_Merger
         {
             activeMods = modList;
             for(int i = 0; i < activeMods.Count; i++)
-            {
                 warnings.Add("");
-            }
-            ActivateFiles(0, activeMods.Count - 1);
+            ActivateFiles(0, activeMods.Count);
         }
 
         public void Add(ModEntry entry)
@@ -134,13 +132,19 @@ namespace DC_Mod_Merger
         public string Name { get; set; }
         [XmlElement("ID")]
         public string ID { get; set; }
-        [XmlElement("Files")]
-        public List<string> Files { get; set; }
         [XmlElement("HasStruct")]
         public bool HasStruct { get; set; }
 
+        public List<string> Files { get; set; }
+
         public bool IsActive { get { return Active; } }
+
         public string Path { get { return Program.MOD_PATH + "\\" + ID; } }
+
+        public void FetchFiles()
+        {
+            Files = PakReader.ReadFilesInPAK(Path+"\\res.pak");
+        }
 
         public override string ToString()
         {

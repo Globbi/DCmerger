@@ -12,7 +12,7 @@ namespace DC_Mod_Merger
 {
     public partial class MainWindow : Form
     {
-        private ModManager mm;
+        private ModManager manager;
         private bool badExit;
         private string warnings;
 
@@ -28,59 +28,60 @@ namespace DC_Mod_Merger
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            if (LoadSettings() && Program.CheckForModMerger())
-            {
-                mm = new ModManager();
-                RefreshLists();
-                UpdateWarning();
-            }
-            else if (!Program.CheckForModMerger())
-            {
-                MessageBox.Show("Please download \"Mod Merger\" mod from the Workshop", "No Mod");
-                badExit = true;
-                Application.Exit();
-            }
-            else
-            {
-                MessageBox.Show("Something went wrong.", "Oof");
-                badExit = true;
-                Application.Exit();
-            }
-        }
-
-
-        //Settings
-        private bool LoadSettings()
-        {
             if (!Program.HasSettings)
             {
-                return RequestSettings();
+                if (!RequestLibrary())
+                {
+                    ErrorMessage("This Steam library doesn't contain Dead Cells.", "Oops");
+                    return;
+                }
+                if (!RequestTool())
+                {
+                    ErrorMessage("This is not the PAKTool.exe", "Oops");
+                    return;
+                }
+                Program.WriteSettings();
             }
             else
             {
-                return Program.ReadSettings();
+                Program.ReadSettings();
             }
-        }
 
-        private bool RequestSettings()
-        {
-            if (!Program.DefaultSteam())
+            if (!Program.CheckForModMerger())
             {
-                MessageBox.Show("Steam is not in defaul dir.\n" +
-                    "Please select Steam installation.", "Setup");
+                ErrorMessage("Please download \"Mod Merger\" mod from the Workshop", "No Mod");
+                return;
+            }
+            
+            manager = new ModManager();
+            RefreshLists();
+            UpdateWarnings();
+        }
+        
+        private bool RequestLibrary()
+        {
+            if (!Program.DefaultSteamLibrary())
+            {
+                MessageBox.Show("Can't find Dead Cells on default path.\n" +
+                    "Please select the Steam library that contains Dead Cells.\n\n" +
+                    "(Usually it's just the Steam folder unless you have a\n" +
+                    "separate Library for games.)", "Setup");
                 if (!Program.RequestSteamFolder()) return false;
                 Program.TOOL_PATH = Program.STEAM + Program.TOOL_PATH;
             }
-            if (!Program.DefaultTool())
-            {
-                MessageBox.Show("PAKTool not found.\n" +
-                    "Please select PAKTool.exe manually.", "Setup");
-                if (!Program.RequestPAKTool()) return false;
-            }
-            Program.WriteSettings();
             return true;
         }
 
+        private bool RequestTool()
+        {
+            if (!Program.DefaultTool())
+            {
+                MessageBox.Show("Unable to locate PAKTool.\n" +
+                    "Please select PAKTool.exe manually.", "Setup");
+                if (!Program.RequestPAKTool()) return false;
+            }
+            return true;
+        }
 
         //Active List
         private void ListUsed_MouseDown(object sender, MouseEventArgs e)
@@ -103,36 +104,35 @@ namespace DC_Mod_Merger
             
             //Reorder
             ModEntry mod = e.Data.GetData(typeof(ModEntry)) as ModEntry;
-            mm.Reorder(listActive.Items.IndexOf(mod), index);
+            manager.Reorder(listActive.Items.IndexOf(mod), index);
             listActive.Items.Remove(mod);
             listActive.Items.Insert(index, mod);
-            UpdateWarning();
+            UpdateWarnings();
         }
 
 
         //Menu Strip
         private void RefreshModListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mm.FetchMods();
-            UpdateWarning();
-            RefreshLists();
-        }
-
-        private void CleanRebuildToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mm.FreshUnpackMods();
-            UpdateWarning();
+            manager.RefreshMods();
+            UpdateWarnings();
             RefreshLists();
         }
 
         private void PAKToolPathToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(Program.RequestPAKTool()) Program.WriteSettings();
+            if(Program.RequestPAKTool())
+                Program.WriteSettings();
+            else
+                MessageBox.Show("I don't think this is the thing I'm looking for", "Oops");
         }
 
-        private void SteamPathToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LibraryPathToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Program.RequestSteamFolder()) Program.WriteSettings();
+            if (Program.RequestSteamFolder())
+                Program.WriteSettings();
+            else
+                MessageBox.Show("This Library doesn't have Dead Cells", "Oops");
         }
 
         private void CreditsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -146,9 +146,9 @@ namespace DC_Mod_Merger
         {
             if(listPassive.SelectedIndex >= 0)
             {
-                mm.ActivateMod(listPassive.SelectedIndex);
+                manager.ActivateMod(listPassive.SelectedIndex);
                 RefreshLists();
-                UpdateWarning();
+                UpdateWarnings();
             }
         }
 
@@ -156,22 +156,22 @@ namespace DC_Mod_Merger
         {
             if (listActive.SelectedIndex >= 0)
             {
-                mm.DeactivateMod(listActive.SelectedIndex);
+                manager.DeactivateMod(listActive.SelectedIndex);
                 RefreshLists();
-                UpdateWarning();
+                UpdateWarnings();
             }
         }
 
         private void ButtonBuild_Click(object sender, EventArgs e)
         {
-            mm.AssambleMod();
+            manager.AssambleMod();
             MessageBox.Show("Done.");
         }
 
         private void ButtonReset_Click(object sender, EventArgs e)
         {
-            mm.ResetLists();
-            UpdateWarning();
+            manager.ResetLists();
+            UpdateWarnings();
             RefreshLists();
         }
 
@@ -182,9 +182,9 @@ namespace DC_Mod_Merger
 
 
         //Additional
-        private void UpdateWarning()
+        private void UpdateWarnings()
         {
-            warnings = mm.GetWarnings();
+            warnings = manager.GetWarnings();
             if(warnings != "")
             {
                 pictureWarning.Visible = true;
@@ -198,12 +198,12 @@ namespace DC_Mod_Merger
         private void RefreshLists()
         {
             listPassive.Items.Clear();
-            foreach (var entry in mm.PassiveMods)
+            foreach (var entry in manager.PassiveMods)
             {
                 listPassive.Items.Add(entry);
             }
             listActive.Items.Clear();
-            foreach (var entry in mm.ActiveMods)
+            foreach (var entry in manager.ActiveMods)
             {
                 listActive.Items.Add(entry);
             }
@@ -211,7 +211,14 @@ namespace DC_Mod_Merger
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!badExit) mm.Cereal();
+            if (!badExit) manager.Cereal();
+        }
+
+        private void ErrorMessage(string text, string titel)
+        {
+            MessageBox.Show(text, titel);
+            badExit = true;
+            Application.Exit();
         }
     }
 }
