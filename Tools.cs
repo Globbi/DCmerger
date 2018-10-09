@@ -55,13 +55,20 @@ namespace DC_Mod_Merger
         {
             string resPakPath = Program.MOD_PATH + "\\" + modID + "\\res.pak";
             if (!File.Exists(resPakPath)) return false;
-            ProcessStartInfo start = new ProcessStartInfo()
-            {
+
+            ProcessStartInfo start = new ProcessStartInfo();
+            start.Arguments = "-Expand -OutDir \"" + OutDir + "\" -RefPak \"" + resPakPath + '"';
+            start.FileName = '"' + Program.TOOL_PATH + '"';
+            start.WindowStyle = ProcessWindowStyle.Hidden;
+            start.CreateNoWindow = true;
+
+            /*  {
                 Arguments = "-Expand -OutDir \"" + OutDir + "\" -RefPak \"" + resPakPath + '"',
                 FileName = '"' + Program.TOOL_PATH + '"',
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true
-            };
+            };  */
+
             int exitCode = 0;
             using (Process proc = Process.Start(start))
             {
@@ -74,13 +81,18 @@ namespace DC_Mod_Merger
 
         public static bool PackResPak(string InDir)
         {
-            ProcessStartInfo start = new ProcessStartInfo()
-            {
+            ProcessStartInfo start = new ProcessStartInfo();
+            start.Arguments = "-Collapse -InDir \"" + InDir + "\" -OutPak \"" + Program.MOD_MERGER + "\\res.pak\"";
+            start.FileName = '"' + Program.TOOL_PATH + '"';
+            start.WindowStyle = ProcessWindowStyle.Hidden;
+            start.CreateNoWindow = true;
+
+            /*  {
                 Arguments = "-Collapse -InDir \"" + InDir + "\" -OutPak \"" + Program.MOD_MERGER + "\\res.pak\"",
                 FileName = '"' + Program.TOOL_PATH + '"',
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true
-            };
+            };  */
             int exitCode = 0;
             using (Process proc = Process.Start(start))
             {

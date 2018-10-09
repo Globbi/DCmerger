@@ -128,8 +128,11 @@ namespace DC_Mod_Merger
             }
 
             //Do I need to make a res.pak? otherwise just wipe the old one
-            if (Directory.EnumerateFileSystemEntries(TEMP).Any())
-                Tools.PackResPak(TEMP);
+            if (Directory.Exists(TEMP))
+            {
+                if (Directory.EnumerateFileSystemEntries(TEMP).Any())
+                    Tools.PackResPak(TEMP);
+            }
             else
                 if (File.Exists(Program.MOD_MERGER + "\\res.pak")) File.Delete(Program.MOD_MERGER + "\\res.pak");
 
