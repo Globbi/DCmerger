@@ -38,6 +38,7 @@
             this.toolMenuMods = new System.Windows.Forms.ToolStripMenuItem();
             this.updateModListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.headerFixoldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeModsPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pAKToolPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.creditsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -129,12 +130,20 @@
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.headerFixoldToolStripMenuItem,
             this.changeModsPathToolStripMenuItem,
             this.pAKToolPathToolStripMenuItem,
             this.creditsToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // headerFixoldToolStripMenuItem
+            // 
+            this.headerFixoldToolStripMenuItem.Name = "headerFixoldToolStripMenuItem";
+            this.headerFixoldToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.headerFixoldToolStripMenuItem.Text = "Header Fix (old)";
+            this.headerFixoldToolStripMenuItem.Click += new System.EventHandler(this.HeaderFixoldToolStripMenuItem_Click);
             // 
             // changeModsPathToolStripMenuItem
             // 
@@ -220,7 +229,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainWindow";
-            this.Text = "DC Mod Merger (v1.0.2)";
+            this.Text = "DC Mod Merger (v1.0.4)";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
@@ -249,6 +258,7 @@
         private System.Windows.Forms.PictureBox pictureWarning;
         private System.Windows.Forms.Button buttonReset;
         private System.Windows.Forms.ToolStripMenuItem creditsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem headerFixoldToolStripMenuItem;
     }
 }
 

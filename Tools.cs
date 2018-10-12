@@ -11,6 +11,8 @@ namespace DC_Mod_Merger
 {
     static class Tools
     {
+        public static bool UseHeaderFix = false;
+
         public static string ReadModName(string path)
         {
             if (!File.Exists(path)) return "MissingSettingsJSON";
@@ -62,13 +64,6 @@ namespace DC_Mod_Merger
             start.WindowStyle = ProcessWindowStyle.Hidden;
             start.CreateNoWindow = true;
 
-            /*  {
-                Arguments = "-Expand -OutDir \"" + OutDir + "\" -RefPak \"" + resPakPath + '"',
-                FileName = '"' + Program.TOOL_PATH + '"',
-                WindowStyle = ProcessWindowStyle.Hidden,
-                CreateNoWindow = true
-            };  */
-
             int exitCode = 0;
             using (Process proc = Process.Start(start))
             {
@@ -87,12 +82,6 @@ namespace DC_Mod_Merger
             start.WindowStyle = ProcessWindowStyle.Hidden;
             start.CreateNoWindow = true;
 
-            /*  {
-                Arguments = "-Collapse -InDir \"" + InDir + "\" -OutPak \"" + Program.MOD_MERGER + "\\res.pak\"",
-                FileName = '"' + Program.TOOL_PATH + '"',
-                WindowStyle = ProcessWindowStyle.Hidden,
-                CreateNoWindow = true
-            };  */
             int exitCode = 0;
             using (Process proc = Process.Start(start))
             {
@@ -100,7 +89,8 @@ namespace DC_Mod_Merger
                 exitCode = proc.ExitCode;
             }
 
-            FixBytes();
+            if(UseHeaderFix)
+                FixBytes();
 
             return exitCode == 0 ? true : false;
         }

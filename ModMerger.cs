@@ -220,5 +220,12 @@ namespace DC_Mod_Merger
             badExit = true;
             Application.Exit();
         }
+
+        private void HeaderFixoldToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Tools.UseHeaderFix = !Tools.UseHeaderFix;
+            headerFixoldToolStripMenuItem.Checked = Tools.UseHeaderFix;
+            headerFixoldToolStripMenuItem.CheckState = Tools.UseHeaderFix ? CheckState.Checked : CheckState.Unchecked;
+        }
     }
 }
